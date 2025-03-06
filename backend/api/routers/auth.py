@@ -9,7 +9,7 @@ import os
 from api.models import User
 from api.deps import db_dependency, bcrypt_context
 
-load_dotenv()
+load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
 
 router = APIRouter(
     prefix='/auth',

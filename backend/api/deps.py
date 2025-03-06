@@ -9,7 +9,7 @@ import os
 from .database import SessionLocal
 
 
-load_dotenv()
+load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
 
 SECRET_KEY = os.getenv("AUTH_SECRET_KEY")
 ALGORITHM = os.getenv("AUTH_ALGORITHM")
@@ -28,7 +28,7 @@ bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_bearer = OAuth2PasswordBearer(tokenUrl="auth/token")
 oauth2_bearer_dependency = Annotated[str, Depends(oauth2_bearer)]
 
-async def get_current_user(token: str = oauth2_bearer_dependency):
+async def get_current_user(token: oauth2_bearer_dependency):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get("sub")
