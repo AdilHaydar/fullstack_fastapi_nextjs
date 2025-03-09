@@ -18,6 +18,7 @@ class WorkoutBase(BaseModel):
 class WorkoutCreate(WorkoutBase):
     ...
     
+    
 
 @router.get('/')
 def get_workout(db: db_dependency, user: user_dependency, workout_id: int):
