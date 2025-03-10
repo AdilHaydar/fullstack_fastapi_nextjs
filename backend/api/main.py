@@ -17,7 +17,6 @@ app.add_middleware(
 
 @app.get("/")
 def health_check():
-    print("Healt Check")
     return "Health check complete"
 
 app.include_router(auth.router)

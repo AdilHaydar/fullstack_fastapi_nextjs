@@ -62,7 +62,7 @@ const Home = () => {
         description: routineDescription,
         workouts: selectedWorkouts,
       });
-      setRoutines([...routines, response.data]);
+      setRoutines([...routines, response.data[0]]);
       setRoutineName('');
       setRoutineDescription('');
       setSelectedWorkouts([]);

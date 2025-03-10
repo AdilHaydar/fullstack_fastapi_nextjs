@@ -31,7 +31,6 @@ oauth2_bearer_dependency = Annotated[str, Depends(oauth2_bearer)]
 async def get_current_user(token: oauth2_bearer_dependency):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        print("PAYLOAD:::", payload)
         username: str = payload.get("sub")
         user_id: int = payload.get("id")
         if username is None or user_id is None:
