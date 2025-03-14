@@ -5,16 +5,10 @@ import axios from "axios"
 
 const Register = () => {
     const { login } = useContext(AuthContext)
-    const [username, setUsername] = useState("")
-    const [password, setPassword] = useState("")
     const [error, setError] = useState("")
     const [registerUsername, setRegisterUsername] = useState("")
     const [registerPassword, setRegisterPassword] = useState("")
 
-    const handleSubmit = async (e) => {
-        e.preventDefault()
-        login(username, password)
-    }
 
     const handleRegister = async (e) => {
         e.preventDefault()
