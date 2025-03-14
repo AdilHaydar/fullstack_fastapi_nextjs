@@ -8,6 +8,8 @@ from dotenv import load_dotenv
 import os
 from api.models import User
 from api.deps import db_dependency, bcrypt_context
+from ..middlewares import throttling
+
 
 load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
 
@@ -44,7 +46,7 @@ def create_access_token(username: str, user_id: int, expire_delta: timedelta):
     encoded_jwt = jwt.encode(encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
-@router.post("/", status_code=status.HTTP_201_CREATED)
+@router.post("/", status_code=status.HTTP_201_CREATED, dependencies=[Depends(throttling.rate_limiter.check_limit)])
 async def create_user(db: db_dependency, create_user_request: UserCreateRequest):
     user = User(username=create_user_request.username, hashed_password=bcrypt_context.hash(create_user_request.password))
     db.add(user)
@@ -52,7 +54,7 @@ async def create_user(db: db_dependency, create_user_request: UserCreateRequest)
     # db.refresh(user)
     # return user
     
-@router.post("/token", response_model=Token)
+@router.post("/token", response_model=Token, dependencies=[Depends(throttling.rate_limiter.check_limit)])
 async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db: db_dependency):
     user = authenticate_user(form_data.username, form_data.password, db)
     if not user:
